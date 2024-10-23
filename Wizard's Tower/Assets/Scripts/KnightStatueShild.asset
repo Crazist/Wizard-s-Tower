@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbd9777f1ac0c95438c947291f4ad5b2, type: 3}
+  m_Name: KnightStatueShild
+  m_EditorClassIdentifier: 
+  Prefab: {fileID: 2201884155602600919, guid: cf130abdb83cd794ab4c10d70f69635e, type: 3}
+  SpawnChance: 0.05
+  MinDistance: 5
