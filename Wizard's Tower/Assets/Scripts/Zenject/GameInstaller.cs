@@ -1,4 +1,5 @@
 using DungenGenerator;
+using Enemy;
 using Factory;
 using Skills;
 using UnityEngine;
@@ -21,7 +22,8 @@ namespace Zenject
             Container.Bind<ItemSpawner>().AsSingle();
             Container.Bind<AssetProvider>().AsSingle();
             Container.Bind<VFXService>().AsSingle();
-           
+            Container.Bind<EnemySpawnerService>().AsSingle();
+            
             Container.BindInterfacesAndSelfTo<SkillService>().AsSingle();
         }
     }

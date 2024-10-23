@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Enemy;
 using Factory;
 using UnityEngine;
 using Zenject;
@@ -16,6 +17,7 @@ namespace DungenGenerator
         [SerializeField] private int _roomWalkLength = 5;
         [SerializeField] private int _walkIterations = 10;
         [SerializeField] private int _minRoomSize = 5;
+        [SerializeField] private int _maxRoomSize = 10;
         [SerializeField] private bool _resetEachWalkIteration = true;
 
         private RoomService _roomService;
@@ -23,11 +25,14 @@ namespace DungenGenerator
         private WallService _wallService;
         private DungeonFactory _dungeonFactory;
         private ItemSpawner _itemSpawner;
+        private EnemySpawnerService _enemySpawnerService;
 
         [Inject]
         public void Construct(BspService bspService, RoomService roomService, CorridorService corridorService,
-            WallService wallService, DungeonFactory dungeonFactory, ItemSpawner itemSpawner)
+            WallService wallService, DungeonFactory dungeonFactory, ItemSpawner itemSpawner,
+            EnemySpawnerService enemySpawnerService)
         {
+            _enemySpawnerService = enemySpawnerService;
             _itemSpawner = itemSpawner;
             _roomService = roomService;
             _corridorService = corridorService;
@@ -45,7 +50,7 @@ namespace DungenGenerator
             dungeonContainer.transform.SetParent(_dungeonParent);
 
             List<Room> rooms = _roomService.GenerateRooms(_dungeonSpace, _iterations, _shrinkPercentage,
-                _roomWalkLength, _walkIterations, _resetEachWalkIteration, dungeonContainer, _minRoomSize);
+                _roomWalkLength, _walkIterations, _resetEachWalkIteration, dungeonContainer, _minRoomSize, _maxRoomSize);
 
             Vector2Int initialPosition = rooms[0].GetCenter();
             rooms = rooms.OrderBy(room => room.DistanceTo(initialPosition)).ToList();
@@ -54,10 +59,12 @@ namespace DungenGenerator
                 dungeonContainer);
 
             _wallService.GenerateWalls(rooms, corridorPositions, dungeonContainer, _itemsHolder);
-            
+
             _itemSpawner.SpawnItemsInRooms(rooms, _dungeonParent, _itemsHolder);
 
             SpawnPlayer(rooms[0]);
+            
+            _enemySpawnerService.SpawnEnemiesInRooms(rooms);
         }
 
         public void ClearDungeon()
@@ -66,7 +73,7 @@ namespace DungenGenerator
             {
                 DestroyImmediate(child.gameObject);
             }
-            
+
             _itemSpawner.Clear();
         }
 

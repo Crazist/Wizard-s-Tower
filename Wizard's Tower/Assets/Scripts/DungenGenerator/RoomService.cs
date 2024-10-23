@@ -21,9 +21,9 @@ namespace DungenGenerator
 
         public List<Room> GenerateRooms(RectInt dungeonSpace, int iterations, float shrinkPercentage,
             int roomWalkLength, int walkIterations, bool resetEachWalkIteration,
-            GameObject parent, int minRoomArea)
+            GameObject parent, int minRoomArea, int maxRoomArea)
         {
-            List<RectInt> rooms = _bspService.GenerateRooms(dungeonSpace, iterations, minRoomArea);
+            List<RectInt> rooms = _bspService.GenerateRooms(dungeonSpace, iterations, minRoomArea, maxRoomArea);
             List<Room> roomList = new List<Room>();
 
             foreach (var roomRect in rooms)

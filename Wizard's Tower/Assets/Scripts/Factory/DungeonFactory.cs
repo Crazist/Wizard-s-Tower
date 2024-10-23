@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DungenGenerator;
 using Player;
+using Zenject;
 
 namespace Factory
 {
@@ -9,10 +10,14 @@ namespace Factory
     {
         private const string PlayerResourcePath = "Player";
         private const string SpawnConfigPath = "Configs/SpawnConfig";
-
+        
         private SpawnConfig _spawnConfig;
+        private AssetProvider _assetProvider;
 
         public PlayerController Player { get; set; }
+
+        [Inject]
+        private void Construct(AssetProvider assetProvider) => _assetProvider = assetProvider;
 
         public DungeonFactory()
         {
@@ -24,6 +29,8 @@ namespace Factory
             var player = Resources.Load<PlayerController>(PlayerResourcePath);
             Player = Object.Instantiate(player, pos, Quaternion.identity);
         }
+        public GameObject SpawnEnemy(GameObject gameObject) => 
+            Object.Instantiate(gameObject);
 
         public void SpawnFloor(Vector3 position, Transform parent)
         {
