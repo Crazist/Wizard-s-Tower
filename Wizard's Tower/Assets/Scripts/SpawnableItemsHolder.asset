@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 192f6566430463b4e82ce02d1b6a541d, type: 3}
+  m_Name: SpawnableItemsHolder
+  m_EditorClassIdentifier: 
+  Items:
+  - {fileID: 11400000, guid: 2fae0049d325f0546a071db519f5ca0e, type: 2}
+  NearWallPrefabs:
+  - {fileID: 11400000, guid: 754154db2e160a94e9791548bd4234f9, type: 2}
+  - {fileID: 11400000, guid: 4ac62a1b3c0a43a4b991ba754e560b7a, type: 2}
+  AwayFromWallPrefabs:
+  - {fileID: 11400000, guid: ca7ac3417301b9d4aaa3248b4d3c5582, type: 2}
+  - {fileID: 11400000, guid: d33d9bbbae79f4348a26f8800ed83e7f, type: 2}
+  - {fileID: 11400000, guid: 24ece174d18bd454486983f869d426c1, type: 2}
