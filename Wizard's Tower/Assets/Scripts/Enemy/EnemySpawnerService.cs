@@ -20,16 +20,13 @@ namespace Enemy
 
         public void SpawnEnemiesInRooms(List<Room> allRooms)
         {
-            // Исключаем первую комнату
             if (allRooms.Count > 1)
                 allRooms.RemoveAt(0);
             else
                 return;
 
-            // Разделяем комнаты на ближние, средние и дальние
             var (nearRooms, mediumRooms, farRooms) = SplitRoomsIntoGroups(allRooms);
 
-            // Спаун врагов начиная с дальних комнат
             SpawnEnemiesInGroup(farRooms, SpawnDistanceType.Far, _assetProvider.EnemySpawnConfig.MaxEnemiesFarRooms,
                 _assetProvider.EnemySpawnConfig.MinEnemiesFarRooms);
             SpawnEnemiesInGroup(mediumRooms, SpawnDistanceType.Medium,
@@ -66,7 +63,6 @@ namespace Enemy
                 {
                     foreach (var spawnCondition in _assetProvider.EnemySpawnConfig.EnemySpawnConditions)
                     {
-                        // Проверяем, соответствует ли дистанция спауна
                         if (spawnCondition.SpawnDistance != distanceType)
                             continue;
 
@@ -74,23 +70,26 @@ namespace Enemy
                         if (randomValue <= spawnCondition.SpawnChance)
                         {
                             Vector3 spawnPosition = GetRandomPositionInRoom(room);
-                            SpawnEnemy(spawnCondition.EnemyPrefab, spawnPosition, Quaternion.identity);
+                            SpawnEnemy(room, spawnCondition._enemyAIBase, spawnPosition, Quaternion.identity);
                         }
                     }
                 }
             }
         }
 
-        private void SpawnEnemy(GameObject enemyPrefab, Vector3 position, Quaternion rotation)
+        private void SpawnEnemy(Room room, EnemyAIBase enemyPrefab, Vector3 position, Quaternion rotation)
         {
-            GameObject newEnemy = _dungeonFactory.SpawnEnemy(enemyPrefab);
-            newEnemy.transform.position = position;
-            newEnemy.transform.rotation = rotation;
+            EnemyAIBase newEnemy = _dungeonFactory.SpawnEnemy(enemyPrefab);
+           
+            var transform = newEnemy.transform;
+            transform.position = position;
+            transform.rotation = rotation;
+            
+            newEnemy.SetRoom(room);
         }
 
         private Vector3 GetRandomPositionInRoom(Room room)
         {
-            // Находим случайную позицию в пределах комнаты
             List<Vector2Int> positions = new List<Vector2Int>(room.RoomPositions);
             Vector2Int randomPosition = positions[Random.Range(0, positions.Count)];
             return new Vector3(randomPosition.x, 0, randomPosition.y);

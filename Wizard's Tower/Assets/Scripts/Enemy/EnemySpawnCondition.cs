@@ -5,7 +5,7 @@ namespace Enemy
     [System.Serializable]
     public class EnemySpawnCondition
     {
-        public GameObject EnemyPrefab;
+        public EnemyAIBase _enemyAIBase;
         public SpawnDistanceType SpawnDistance;
         public float SpawnChance;
     }

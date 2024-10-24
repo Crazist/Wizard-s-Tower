@@ -2,21 +2,26 @@ using Panda;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
+using DungenGenerator;
 using System.Collections;
 
 namespace Enemy
 {
-    public class AIController : MonoBehaviour
+    public class EnemyAIBase : MonoBehaviour
     {
-        [SerializeField] private NavMeshAgent _navMeshAgent;
-        [SerializeField] private float _wanderRadius = 10f;
-        private MovementService _movementService;
+        [SerializeField] protected NavMeshAgent _navMeshAgent;
+        
+        protected Room CurrentRoom;
+        protected MovementService MovementService;
 
         [Inject]
         private void Construct(MovementService movementService) => 
-            _movementService = movementService;
+            MovementService = movementService;
 
-        private void Start()
+        public virtual void SetRoom(Room room) => 
+            CurrentRoom = room;
+
+        protected virtual void Start()
         {
             if (_navMeshAgent != null)
             {
@@ -34,11 +39,11 @@ namespace Enemy
         }
 
         [Task]
-        public void MoveToRandomPosition()
+        public virtual void MoveToRandomPosition()
         {
-            if (_movementService != null && _navMeshAgent != null && _navMeshAgent.enabled)
+            if (MovementService != null && _navMeshAgent != null && _navMeshAgent.enabled && CurrentRoom != null)
             {
-                _movementService.MoveToRandomPosition(transform.position, _navMeshAgent, _wanderRadius);
+                MovementService.MoveToRandomPosition(CurrentRoom, _navMeshAgent, 10f);
                 Task.current.Succeed();
             }
             else

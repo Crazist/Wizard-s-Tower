@@ -1,27 +1,41 @@
 using UnityEngine;
 using UnityEngine.AI;
+using DungenGenerator;
+using System.Collections.Generic;
 
 namespace Enemy
 {
     public class MovementService
     {
-        public void MoveToRandomPosition(Vector3 center, NavMeshAgent agent, float radius)
+        public void MoveToRandomPosition(Room room, NavMeshAgent agent, float radius)
         {
-            Vector3 randomPoint = GetRandomPoint(center, radius);
-            agent.SetDestination(randomPoint);
+            if (room == null || agent == null) return;
+
+            Vector3 randomPoint = GetRandomPointInRoom(room);
+
+            if (randomPoint != Vector3.zero && NavMesh.SamplePosition(randomPoint, out NavMeshHit hit, radius, NavMesh.AllAreas))
+            {
+                agent.SetDestination(hit.position);
+            }
         }
 
-        private Vector3 GetRandomPoint(Vector3 center, float radius)
+        private Vector3 GetRandomPointInRoom(Room room)
         {
-            Vector2 randomPoint = Random.insideUnitCircle * radius;
-            Vector3 finalPoint = center + new Vector3(randomPoint.x, 0, randomPoint.y);
+            List<Vector2Int> roomPositionsList = new List<Vector2Int>(room.RoomPositions);
 
-            if (NavMesh.SamplePosition(finalPoint, out NavMeshHit hit, radius, NavMesh.AllAreas))
+            for (int i = 0; i < 10; i++) 
             {
-                return hit.position;
+                Vector2Int randomPos2D = roomPositionsList[Random.Range(0, roomPositionsList.Count)];
+                Vector3 randomPoint = new Vector3(randomPos2D.x, 0, randomPos2D.y);
+
+                if (NavMesh.SamplePosition(randomPoint, out NavMeshHit hit, 1.0f, NavMesh.AllAreas))
+                {
+                    return hit.position;
+                }
             }
 
-            return center;
+            Vector2Int center2D = room.GetCenter();
+            return new Vector3(center2D.x, 0, center2D.y);
         }
     }
 }

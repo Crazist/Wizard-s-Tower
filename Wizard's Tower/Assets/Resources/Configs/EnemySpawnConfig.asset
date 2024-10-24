@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: EnemySpawnConfig
   m_EditorClassIdentifier: 
   EnemySpawnConditions:
-  - EnemyPrefab: {fileID: 4738811608785570748, guid: 4043a151b869c4649b46c9b68af03d6b,
+  - _enemyAIBase: {fileID: 8623809280202973272, guid: 4043a151b869c4649b46c9b68af03d6b,
       type: 3}
     SpawnDistance: 0
     SpawnChance: 1

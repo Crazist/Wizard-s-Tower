@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DungenGenerator;
+using Enemy;
 using Player;
 using Zenject;
 
@@ -29,7 +30,7 @@ namespace Factory
             var player = Resources.Load<PlayerController>(PlayerResourcePath);
             Player = Object.Instantiate(player, pos, Quaternion.identity);
         }
-        public GameObject SpawnEnemy(GameObject gameObject) => 
+        public EnemyAIBase SpawnEnemy(EnemyAIBase gameObject) => 
             Object.Instantiate(gameObject);
 
         public void SpawnFloor(Vector3 position, Transform parent)
