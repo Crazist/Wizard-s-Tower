@@ -23,6 +23,7 @@ namespace Zenject
             Container.Bind<AssetProvider>().AsSingle();
             Container.Bind<VFXService>().AsSingle();
             Container.Bind<EnemySpawnerService>().AsSingle();
+            Container.Bind<MovementService>().AsSingle();
             
             Container.BindInterfacesAndSelfTo<SkillService>().AsSingle();
         }

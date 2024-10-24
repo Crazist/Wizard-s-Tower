@@ -21,7 +21,7 @@ namespace DungenGenerator
 
         public List<Room> GenerateRooms(RectInt dungeonSpace, int iterations, float shrinkPercentage,
             int roomWalkLength, int walkIterations, bool resetEachWalkIteration,
-            GameObject parent, int minRoomArea, int maxRoomArea)
+            Transform parent, int minRoomArea, int maxRoomArea)
         {
             List<RectInt> rooms = _bspService.GenerateRooms(dungeonSpace, iterations, minRoomArea, maxRoomArea);
             List<Room> roomList = new List<Room>();
@@ -71,14 +71,14 @@ namespace DungenGenerator
             }
         }
 
-        private void SpawnRoomFloor(List<Room> rooms, GameObject parent)
+        private void SpawnRoomFloor(List<Room> rooms, Transform parent)
         {
             foreach (var room in rooms)
             {
                 foreach (var pos in room.RoomPositions)
                 {
                     Vector3 floorPosition = new Vector3(pos.x, 0f, pos.y);
-                    _dungeonFactory.SpawnFloor(floorPosition, parent.transform);
+                    _dungeonFactory.SpawnFloor(floorPosition, parent);
                 }
             }
         }

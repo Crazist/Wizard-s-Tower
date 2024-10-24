@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2021265567050181707}
   - component: {fileID: 5456154345371342923}
   - component: {fileID: 6932639622676051000}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Spot Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 3352547880784798242}
   - component: {fileID: 412192523376610465}
   - component: {fileID: 2113905732164124714}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Light_08
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -239,6 +239,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Fire_Effect
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866797894309309924, guid: 4daecac5922e4cf46914efecc3de4129,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 9100074794992775766, guid: 4daecac5922e4cf46914efecc3de4129,
         type: 3}

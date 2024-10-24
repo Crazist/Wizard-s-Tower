@@ -1,0 +1,7 @@
+tree "Root"
+    sequence
+        MoveToRandomPosition
+
+        Wait 1.0
+
+        Wait 1.0

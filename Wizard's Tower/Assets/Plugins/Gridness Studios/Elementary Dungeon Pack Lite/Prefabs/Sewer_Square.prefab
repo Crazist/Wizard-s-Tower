@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6583491107526353129}
   - component: {fileID: 1891503604949382279}
   - component: {fileID: -5571875007215308120}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sewer_Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}

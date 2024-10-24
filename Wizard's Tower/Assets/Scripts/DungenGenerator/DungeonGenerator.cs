@@ -1,7 +1,9 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Enemy;
 using Factory;
+using Unity.AI.Navigation;
 using UnityEngine;
 using Zenject;
 
@@ -10,7 +12,9 @@ namespace DungenGenerator
     public class DungeonGenerator : MonoBehaviour
     {
         [SerializeField] private Transform _dungeonParent;
+        [SerializeField] private Transform _navMeshParent;
         [SerializeField] private SpawnableItemsHolder _itemsHolder;
+        [SerializeField] private NavMeshSurface _surface;
         [SerializeField] [Range(0.0f, 1f)] private float _shrinkPercentage = 0.2f;
         [SerializeField] private RectInt _dungeonSpace;
         [SerializeField] private int _iterations = 4;
@@ -50,30 +54,34 @@ namespace DungenGenerator
             dungeonContainer.transform.SetParent(_dungeonParent);
 
             List<Room> rooms = _roomService.GenerateRooms(_dungeonSpace, _iterations, _shrinkPercentage,
-                _roomWalkLength, _walkIterations, _resetEachWalkIteration, dungeonContainer, _minRoomSize, _maxRoomSize);
+                _roomWalkLength, _walkIterations, _resetEachWalkIteration, _navMeshParent, _minRoomSize, _maxRoomSize);
 
             Vector2Int initialPosition = rooms[0].GetCenter();
             rooms = rooms.OrderBy(room => room.DistanceTo(initialPosition)).ToList();
 
             HashSet<Vector2Int> corridorPositions = _corridorService.ConnectAllRoomsInOrder(rooms,
-                dungeonContainer);
+                _navMeshParent);
 
             _wallService.GenerateWalls(rooms, corridorPositions, dungeonContainer, _itemsHolder);
 
-            _itemSpawner.SpawnItemsInRooms(rooms, _dungeonParent, _itemsHolder);
+            _itemSpawner.SpawnItemsInRooms(rooms, _navMeshParent, _itemsHolder);
 
             SpawnPlayer(rooms[0]);
+
+            _surface.BuildNavMesh();
             
             _enemySpawnerService.SpawnEnemiesInRooms(rooms);
         }
-
         public void ClearDungeon()
         {
             foreach (Transform child in _dungeonParent)
             {
                 DestroyImmediate(child.gameObject);
             }
-
+            foreach (Transform child in _navMeshParent)
+            {
+                DestroyImmediate(child.gameObject);
+            }
             _itemSpawner.Clear();
         }
 

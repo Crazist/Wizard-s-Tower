@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 668735768885291391}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Wall_Chiseled
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 4648322050827598695}
   - component: {fileID: 7839606950340167090}
   - component: {fileID: 7828472570335864355}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Wall_Chiseled
   m_TagString: Untagged
   m_Icon: {fileID: 0}

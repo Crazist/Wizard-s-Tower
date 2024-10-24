@@ -15,7 +15,7 @@ namespace DungenGenerator
             _randomWalkService = randomWalkService;
         }
 
-        public HashSet<Vector2Int> ConnectAllRoomsInOrder(List<Room> rooms, GameObject parent)
+        public HashSet<Vector2Int> ConnectAllRoomsInOrder(List<Room> rooms, Transform parent)
         {
             HashSet<Vector2Int> allCorridorPositions = new HashSet<Vector2Int>();
 
@@ -53,12 +53,12 @@ namespace DungenGenerator
             return allCorridorPositions;
         }
 
-        private void SpawnFloor(HashSet<Vector2Int> corridor, GameObject parent)
+        private void SpawnFloor(HashSet<Vector2Int> corridor, Transform parent)
         {
             foreach (var pos in corridor)
             {
                 Vector3 floorPosition = new Vector3(pos.x, 0f, pos.y);
-                _dungeonFactory.SpawnFloor(floorPosition, parent.transform);
+                _dungeonFactory.SpawnFloor(floorPosition, parent);
             }
         }
     }
