@@ -7,47 +7,41 @@ namespace Player
     public class AnimationController : MonoBehaviour
     {
         private const string Speed = "Speed";
+        private const string Turn = "Turn";
         private const string CastSpellTrigger = "CastSpell";
 
         [SerializeField] private Animator _animator;
-        public Animator Animator => _animator;
-
         private UIFactory _uiFactory;
         private bool _canPlayMovementAnimation = true;
 
         [Inject]
-        public void Construct(UIFactory uiFactory) =>
-            _uiFactory = uiFactory;
-
-        private void Update()
+        public void Construct(UIFactory uiFactory)
         {
-            if (_uiFactory.FixedJoystick == null) return;
-
-            HandleMovementAnimation();
+            _uiFactory = uiFactory;
         }
 
-        private void HandleMovementAnimation()
+        public void UpdateMovementAnimation(float speed, float turn)
         {
-            if (!_canPlayMovementAnimation)
-            {
-                _animator.SetFloat(Speed, 0f);
-                return;
-            }
+            if (!_canPlayMovementAnimation) return;
 
-            float horizontal = _uiFactory.FixedJoystick.Horizontal;
-            float vertical = _uiFactory.FixedJoystick.Vertical;
-            float speed = new Vector2(horizontal, vertical).magnitude;
-
+            // Обновление скорости и направления поворота
             _animator.SetFloat(Speed, speed);
+            _animator.SetFloat(Turn, turn);
         }
 
         public void TriggerCastSpell() => 
             _animator.SetTrigger(CastSpellTrigger);
 
-        public void StopMovementAnimation() =>
+        public void StopMovementAnimation()
+        {
             _canPlayMovementAnimation = false;
+            _animator.SetFloat(Speed, 0f);
+            _animator.SetFloat(Turn, 0f);
+        }
 
-        public void PlayMovementAnimation() =>
+        public void PlayMovementAnimation()
+        {
             _canPlayMovementAnimation = true;
+        }
     }
 }

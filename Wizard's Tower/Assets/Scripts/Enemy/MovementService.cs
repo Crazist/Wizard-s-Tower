@@ -19,7 +19,7 @@ namespace Enemy
             }
         }
 
-        private Vector3 GetRandomPointInRoom(Room room)
+        public Vector3 GetRandomPointInRoom(Room room)
         {
             List<Vector2Int> roomPositionsList = new List<Vector2Int>(room.RoomPositions);
 

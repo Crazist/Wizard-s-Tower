@@ -8,20 +8,36 @@ namespace Player
     {
         [SerializeField] private float _maxMoveSpeed = 1.2f;
         [SerializeField] private float _gravity = -9.81f;
+        [SerializeField] private float _rotationSpeed = 500f; // Скорость поворота
+        [SerializeField] private float _turnSpeedReduction = 0.5f; // Уменьшение скорости во время поворота
+        [SerializeField] private float _turnThreshold = 15f; // Порог для активации анимации поворота
+        [SerializeField] private float _accelerationSpeed = 5f; // Скорость ускорения
+        [SerializeField] private float _decelerationSpeed = 5f; // Скорость замедления
         [SerializeField] private CharacterController _controller;
+        [SerializeField] private AnimationController _animationController;
 
         private Vector3 _velocity;
         private UIFactory _uiFactory;
         private Transform _playerTransform;
+        private float _currentMoveSpeed; // Текущая скорость
+        private float _turnInput; // Параметр для поворота
+        private bool _isMovementStopped;
 
         [Inject]
         public void Construct(UIFactory uiFactory)
         {
             _uiFactory = uiFactory;
             _playerTransform = transform;
+            _currentMoveSpeed = 0f; // Начальная скорость
         }
 
-        private void Update() => Move();
+        private void Update()
+        {
+            if (!_isMovementStopped)
+            {
+                Move();
+            }
+        }
 
         private void Move()
         {
@@ -29,12 +45,22 @@ namespace Player
 
             float moveX = _uiFactory.FixedJoystick.Horizontal;
             float moveZ = _uiFactory.FixedJoystick.Vertical;
-
-            Vector3 move = new Vector3(moveX, 0f, moveZ).normalized;
+            Vector3 moveDirection = new Vector3(moveX, 0f, moveZ).normalized;
 
             float moveMagnitude = new Vector2(moveX, moveZ).magnitude;
-        
-            float currentMoveSpeed = _maxMoveSpeed * moveMagnitude;
+            float targetSpeed = _maxMoveSpeed * moveMagnitude;
+
+            float angleDifference = Vector3.SignedAngle(_playerTransform.forward, moveDirection, Vector3.up);
+            bool isTurning = Mathf.Abs(angleDifference) > _turnThreshold;
+
+            if (isTurning && moveMagnitude >= 0.1f)
+            {
+                targetSpeed *= (1f - _turnSpeedReduction);
+            }
+            _currentMoveSpeed = Mathf.Lerp(_currentMoveSpeed, targetSpeed, (isTurning ? _decelerationSpeed : _accelerationSpeed) * Time.deltaTime);
+
+            _turnInput = Mathf.Clamp(angleDifference / 90f, -1f, 1f);
+            _animationController.UpdateMovementAnimation(_currentMoveSpeed / _maxMoveSpeed, _turnInput);
 
             if (_controller.isGrounded && _velocity.y < 0)
             {
@@ -45,23 +71,31 @@ namespace Player
 
             if (moveMagnitude >= 0.1f)
             {
-                float targetAngle = Mathf.Atan2(move.x, move.z) * Mathf.Rad2Deg;
-                _playerTransform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
-
-                _controller.Move(move * (currentMoveSpeed * Time.deltaTime));
+                Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+                _playerTransform.rotation = Quaternion.RotateTowards(
+                    _playerTransform.rotation,
+                    targetRotation,
+                    _rotationSpeed * Time.deltaTime
+                );
             }
+
+            Vector3 movement = moveDirection * (_currentMoveSpeed * Time.deltaTime);
+            _controller.Move(movement);
 
             _controller.Move(_velocity * Time.deltaTime);
         }
 
         public void StopMovement()
         {
-          //  throw new System.NotImplementedException();
+            _isMovementStopped = true;
+            _currentMoveSpeed = 0f;
+            _animationController.StopMovementAnimation();
         }
 
         public void ResumeMovement()
         {
-         //   throw new System.NotImplementedException();
+            _isMovementStopped = false;
+            _animationController.PlayMovementAnimation();
         }
     }
 }

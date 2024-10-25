@@ -1,3 +1,4 @@
+using System;
 using Panda;
 using UnityEngine;
 using UnityEngine.AI;
@@ -15,13 +16,16 @@ namespace Enemy
         protected MovementService MovementService;
 
         [Inject]
-        private void Construct(MovementService movementService) => 
+        private void Construct(MovementService movementService)
+        {
             MovementService = movementService;
+            WaitForSpawn();
+        }
 
         public virtual void SetRoom(Room room) => 
             CurrentRoom = room;
 
-        protected virtual void Start()
+        private void WaitForSpawn()
         {
             if (_navMeshAgent != null)
             {

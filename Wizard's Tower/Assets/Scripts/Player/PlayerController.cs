@@ -19,7 +19,8 @@ namespace Player
         {
             if (_isCasting)
             {
-                _playerMovement.StopMovement();
+              //  _playerMovement.StopMovement();
+               // _animationController.StopMovementAnimation();
             }
         }
 
@@ -27,17 +28,17 @@ namespace Player
         {
             if (_isCasting) return;
 
+            _isCasting = true;
             _animationController.TriggerCastSpell();
-           // _playerMovement.StopMovement();
-           // _animationController.StopMovementAnimation();
 
-           // StartCoroutine(CastingCoroutine(duration));
+            //_playerMovement.StopMovement();
+            //_animationController.StopMovementAnimation();
+
+            StartCoroutine(CastingCoroutine(duration));
         }
 
         private IEnumerator CastingCoroutine(float duration)
         {
-            _isCasting = true;
-
             yield return new WaitForSeconds(duration);
 
             _isCasting = false;

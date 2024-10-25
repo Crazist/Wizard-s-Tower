@@ -361,7 +361,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 69ce5dd747afb75488c00ed0f554f1d6, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -406,7 +406,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxMoveSpeed: 1.5
   _gravity: -9.81
+  _rotationSpeed: 400
+  _turnSpeedReduction: 0.8
+  _turnThreshold: 15
+  _accelerationSpeed: 3
+  _decelerationSpeed: 20
   _controller: {fileID: 4845880870691762039}
+  _animationController: {fileID: 4064210152196485153}
 --- !u!143 &4845880870691762039
 CharacterController:
   m_ObjectHideFlags: 0

@@ -1,7 +1,10 @@
 tree "Root"
     sequence
-        MoveToRandomPosition
-
-        Wait 1.0
-
-        Wait 1.0
+        CheckNavMeshAgent
+        FindRandomPosition
+        SetMoveTimer
+        StopAndPrepareToRotate
+        RotateToTarget
+        parallel (policy: fail_on_one)
+            MoveToTarget
+            UpdateMoveTimer
