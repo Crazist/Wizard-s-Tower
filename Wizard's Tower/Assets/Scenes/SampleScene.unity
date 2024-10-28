@@ -353,6 +353,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _smoothSpeed: 0.125
   _offset: {x: 0, y: 4.25, z: -2}
+  _inertia: 0.2
+  _rotationSmoothSpeed: 5
 --- !u!1 &373610283
 GameObject:
   m_ObjectHideFlags: 0

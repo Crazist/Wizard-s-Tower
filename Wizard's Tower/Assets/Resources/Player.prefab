@@ -406,11 +406,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxMoveSpeed: 1.5
   _gravity: -9.81
-  _rotationSpeed: 400
+  _rotationSpeed: 450
   _turnSpeedReduction: 0.8
   _turnThreshold: 15
   _accelerationSpeed: 3
-  _decelerationSpeed: 20
+  _decelerationSpeed: 15
   _controller: {fileID: 4845880870691762039}
   _animationController: {fileID: 4064210152196485153}
 --- !u!143 &4845880870691762039

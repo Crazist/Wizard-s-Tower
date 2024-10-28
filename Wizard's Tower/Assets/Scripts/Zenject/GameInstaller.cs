@@ -1,3 +1,4 @@
+using Characters;
 using DungenGenerator;
 using Enemy;
 using Factory;
@@ -24,7 +25,8 @@ namespace Zenject
             Container.Bind<VFXService>().AsSingle();
             Container.Bind<EnemySpawnerService>().AsSingle();
             Container.Bind<MovementService>().AsSingle();
-            
+            Container.Bind<StatsService>().AsSingle();
+                
             Container.BindInterfacesAndSelfTo<SkillService>().AsSingle();
         }
     }

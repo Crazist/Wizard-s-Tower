@@ -2,9 +2,11 @@ tree "Root"
     sequence
         CheckNavMeshAgent
         FindRandomPosition
-        SetMoveTimer
-        StopAndPrepareToRotate
-        RotateToTarget
+        SetRandomTimer(2.0, 5.0)
+        Stop
+        RotateTowards
         parallel (policy: fail_on_one)
-            MoveToTarget
-            UpdateMoveTimer
+            sequence
+                SetDestination
+                HasReachedDestination
+            UpdateTimer

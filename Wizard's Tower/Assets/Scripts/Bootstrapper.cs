@@ -22,5 +22,6 @@ public class Bootstrapper : MonoBehaviour
         _uiFactory.CreateUI();
         _uiFactory.CreateJoystick();
         _uiFactory.CreateSkillsWindow();
+        _uiFactory.CreateStatsWindow();
     }
 }
