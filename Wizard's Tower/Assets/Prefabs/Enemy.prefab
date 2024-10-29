@@ -263,7 +263,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _animator: {fileID: 9060547853871763690}
   _rotationComponent: {fileID: 1067015874953478243}
-  _retreatDistance: 3
+  _navMeshAgent: {fileID: 6987220783759571966}
+  _minRetreatDistance: 2
+  _maxRetreatDistance: 5
   _retreatSpeed: 2
 --- !u!114 &8828387149980762210
 MonoBehaviour:

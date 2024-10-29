@@ -38,5 +38,20 @@ namespace Enemy.Components
                 Task.current.Fail();
             }
         }
+
+        [Task]
+        public void IsPlayerVisible()
+        {
+            bool isPlayerCurrentlyVisible = _blackboard.Get<bool>("IsPlayerVisible");
+            
+            if (isPlayerCurrentlyVisible || (Time.time - _lastSeenTime <= _reactionTime) || (Time.time - _lastSeenTime <= _reactionTime))
+            {
+                Task.current.Succeed();
+            }
+            else
+            {
+                Task.current.Fail();
+            }
+        }
     }
 }

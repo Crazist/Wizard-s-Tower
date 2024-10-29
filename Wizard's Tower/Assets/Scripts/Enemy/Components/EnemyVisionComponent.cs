@@ -8,7 +8,8 @@ namespace Enemy.Components
     public class EnemyVisionComponent : MonoBehaviour
     {
         [SerializeField] private LocalBlackboard _blackboard;
-        [SerializeField] private float _viewRadius = 10f;
+        [SerializeField] private float _viewRadius = 6f;   
+        [SerializeField] private float _triggerRadius = 3f;   
         [SerializeField] private float _viewAngle = 45f;
         [SerializeField] private LayerMask _targetMask;  
         [SerializeField] private LayerMask _obstacleMask; 
@@ -46,7 +47,14 @@ namespace Enemy.Components
                     }
                 }
             }
-
+            
+            if (distanceToPlayer <= _triggerRadius)
+            {
+                _blackboard.Set("IsPlayerVisible", true);
+                Task.current.Succeed();
+                return;
+            }
+            
             _blackboard.Set("IsPlayerVisible", false);
             Task.current.Fail();
         }
@@ -54,7 +62,7 @@ namespace Enemy.Components
         private void OnDrawGizmosSelected()
         {
             Vector3 enemyEyePosition = transform.position + Vector3.up * _eyeHeightOffset;
-            
+
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(transform.position, _viewRadius);
 
@@ -64,6 +72,9 @@ namespace Enemy.Components
             Gizmos.color = Color.yellow;
             Gizmos.DrawLine(enemyEyePosition, enemyEyePosition + leftBoundary);
             Gizmos.DrawLine(enemyEyePosition, enemyEyePosition + rightBoundary);
+
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawWireSphere(transform.position, _triggerRadius);
 
             if (_blackboard != null && _blackboard.HasKey("IsPlayerVisible") && _blackboard.Get<bool>("IsPlayerVisible"))
             {

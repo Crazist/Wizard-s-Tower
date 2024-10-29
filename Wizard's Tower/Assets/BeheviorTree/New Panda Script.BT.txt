@@ -36,15 +36,19 @@ tree "MoveAndSearch"
 tree "Combat"
     parallel (policy: fail_on_one)
         tree("EngagePlayer")
-        repeat
-            sequence
-                Wait(0.5)
-                UpdateVisionState
-                mute
-                    CheckPlayerVisibility 
-                mute
-                    RotateToPlayer
-                                     
+        sequence
+            StartRotateToPlayer
+            repeat
+                fallback
+                    sequence
+                        mute
+                            CheckPlayerVisibility  // Проверка видимости, результат игнорируется
+                        Wait(0.5)
+                        UpdateVisionState
+                    not    
+                        StopRotateToPlayer  // Остановка, если UpdateVisionState вернет фалс
+
+
 tree "EngagePlayer"
     not
         random
