@@ -16,7 +16,7 @@ namespace Enemy
         protected MovementService MovementService;
 
         [Inject]
-        private void Construct(MovementService movementService)
+        public void Construct(MovementService movementService)
         {
             MovementService = movementService;
             WaitForSpawn();

@@ -5,6 +5,11 @@ namespace Enemy
     public class CharacterAnimator : MonoBehaviour
     {
         [SerializeField] private Animator _animator;
+        
+        private const string _dashAnimationName = "DashForward";
+        private const string _retreatAnimationName = "Retreat";
+        private const string _attackAnimationName = "Attack";
+
         private static readonly int Horizontal = Animator.StringToHash("Horizontal");
         private static readonly int Vertical = Animator.StringToHash("Vertical");
         private static readonly int IsMoving = Animator.StringToHash("IsMoving");
@@ -13,18 +18,36 @@ namespace Enemy
         {
             if (_animator == null) return;
 
-            _animator.SetFloat(Horizontal, horizontal);
-            _animator.SetFloat(Vertical, vertical);
-            _animator.SetBool(IsMoving, isMoving);
+            SetHorizontal(horizontal);
+            SetVertical(vertical);
+            SetIsMoving(isMoving);
         }
 
         public void StopMovement()
         {
             if (_animator == null) return;
 
-            _animator.SetFloat(Horizontal, 0f);
-            _animator.SetFloat(Vertical, 0f);
-            _animator.SetBool(IsMoving, false);
+            SetHorizontal(0f);
+            SetVertical(0f);
+            SetIsMoving(false);
         }
+
+        public void SetIsMoving(bool isMoving) => 
+            _animator.SetBool(IsMoving, isMoving);
+
+        public void PlayDash() => 
+            _animator.Play(_dashAnimationName);
+
+        public void PlayRetreat() => 
+            _animator.Play(_retreatAnimationName);
+
+        public void PlayAttack() => 
+            _animator.Play(_attackAnimationName);
+
+        private void SetHorizontal(float value) => 
+            _animator.SetFloat(Horizontal, value);
+
+        private void SetVertical(float value) => 
+            _animator.SetFloat(Vertical, value);
     }
 }

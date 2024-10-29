@@ -1,12 +1,64 @@
 tree "Root"
     sequence
         CheckNavMeshAgent
+        tree("PatrolOrCombat")
+
+tree "PatrolOrCombat"
+    fallback
+        tree("Patrol")
+        tree("Combat")
+
+tree "Patrol"
+    sequence
+        tree("InitializePatrol")
+        parallel
+            tree("MoveAndSearch")
+            repeat
+                sequence
+                    not
+                        CheckPlayerVisibility
+                    Wait(0.5) 
+                    
+tree "InitializePatrol"
+    sequence
         FindRandomPosition
         SetRandomTimer(2.0, 5.0)
         Stop
-        RotateTowards
-        parallel (policy: fail_on_one)
+        RotateTowardsTarget
+
+tree "MoveAndSearch"
+    sequence
+        SetDestination
+        HasReachedDestination
+        UpdateTimer
+        Fail
+
+tree "Combat"
+    parallel (policy: fail_on_one)
+        tree("EngagePlayer")
+        repeat
             sequence
-                SetDestination
-                HasReachedDestination
-            UpdateTimer
+                Wait(0.5)
+                UpdateVisionState
+                mute
+                    CheckPlayerVisibility 
+                mute
+                    RotateToPlayer
+                                     
+tree "EngagePlayer"
+    not
+        random
+            tree("ChaseOrAttack")
+            tree("RetreatIfNeeded")
+
+tree "ChaseOrAttack"
+    sequence
+        TryDash
+        TryAttack
+
+tree "RetreatIfNeeded"
+    sequence
+        CalculateRetreatPosition
+        repeat
+            not
+                Retreat
