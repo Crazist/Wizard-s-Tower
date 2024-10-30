@@ -11,9 +11,9 @@ namespace Enemy.Components
         [SerializeField] private float _viewRadius = 6f;   
         [SerializeField] private float _triggerRadius = 3f;   
         [SerializeField] private float _viewAngle = 45f;
-        [SerializeField] private LayerMask _targetMask;  
-        [SerializeField] private LayerMask _obstacleMask; 
-        [SerializeField] private float _eyeHeightOffset = 0.2f; 
+        [SerializeField] private float _eyeHeightOffset = 0.2f;
+        [SerializeField] private LayerMask _targetMask;
+        [SerializeField] private LayerMask _obstacleMask;
 
         private DungeonFactory _dungeonFactory;
 

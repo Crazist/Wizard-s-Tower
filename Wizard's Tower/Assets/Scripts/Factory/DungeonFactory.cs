@@ -13,12 +13,8 @@ namespace Factory
         private const string SpawnConfigPath = "Configs/SpawnConfig";
         
         private SpawnConfig _spawnConfig;
-        private AssetProvider _assetProvider;
-
+       
         public PlayerController Player { get; set; }
-
-        [Inject]
-        private void Construct(AssetProvider assetProvider) => _assetProvider = assetProvider;
 
         public DungeonFactory()
         {

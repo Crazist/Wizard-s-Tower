@@ -34,31 +34,40 @@ tree "MoveAndSearch"
         Fail
 
 tree "Combat"
-    parallel (policy: fail_on_one)
+    parallel
         tree("EngagePlayer")
         sequence
-            StartRotateToPlayer
-            repeat
-                fallback
+            IsPlayerVisible
+            fallback
+                while UpdateVisionState 
                     sequence
-                        mute
-                            CheckPlayerVisibility  // Проверка видимости, результат игнорируется
-                        Wait(0.5)
-                        UpdateVisionState
-                    not    
-                        StopRotateToPlayer  // Остановка, если UpdateVisionState вернет фалс
+                        StartRotateToPlayer
+                        repeat
+                            sequence
+                                Wait(0.5)
+                                IsPlayerVisible
+                StopRotateToPlayer 
 
 
 tree "EngagePlayer"
-    not
+    sequence
         random
             tree("ChaseOrAttack")
-            tree("RetreatIfNeeded")
-
+            
+        
+       
 tree "ChaseOrAttack"
     sequence
-        TryDash
-        TryAttack
+        mute
+            StartSequence("Dash")
+        mute     
+            Stop    
+        repeat
+            sequence
+                IsSequenceRunning
+                Wait(0.5)
+
+                
 
 tree "RetreatIfNeeded"
     sequence

@@ -57,5 +57,6 @@ namespace Enemy.Components
             _characterAnimator.StopMovement();
             Task.current.Succeed();
         }
+        
     }
 }

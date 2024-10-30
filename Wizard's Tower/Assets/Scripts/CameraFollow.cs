@@ -5,8 +5,8 @@ using Zenject;
 
 public class CameraFollow : MonoBehaviour
 {
-    [SerializeField] private float _smoothSpeed = 0.125f; 
-    [SerializeField] private Vector3 _offset;  
+    [SerializeField] private Vector3 _offset;
+    [SerializeField] private float _smoothSpeed = 0.125f;
     [SerializeField] private float _inertia = 0.2f; // Параметр инерции
     [SerializeField] private float _rotationSmoothSpeed = 5f; // Скорость плавного поворота камеры
 

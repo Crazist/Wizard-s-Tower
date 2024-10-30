@@ -44,6 +44,14 @@ namespace Enemy
         public void PlayAttack() => 
             _animator.Play(_attackAnimationName);
 
+        public bool IsDashComplete()
+        {
+            if (_animator == null) return true;
+
+            var stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+            return !stateInfo.IsName(_dashAnimationName) || stateInfo.normalizedTime >= 1f;
+        }
+
         private void SetHorizontal(float value) => 
             _animator.SetFloat(Horizontal, value);
 
